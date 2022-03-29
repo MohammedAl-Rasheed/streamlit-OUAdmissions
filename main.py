@@ -76,6 +76,7 @@ def getDataFrame():
                         "99.75 (including bio chem data and adv func)": '99.75',
                         "96-97???": '96.5',
                         "95-96?": '95.5',
+                        "945": '94.5',
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
