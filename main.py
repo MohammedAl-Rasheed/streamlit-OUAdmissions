@@ -112,16 +112,18 @@ def getDF(df, uni_names, program_names, type_of_applicant):
         df_type = df[df['Type (101/105)'].str.contains(type_of_applicant, na=False, case=False)].reset_index(drop=True)
 
         df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df_type])
+    else:
+        df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df])
 
-    # for i in range(len(uni_names)):
-    #     # append this to a df df[df['School'].str.contains(uni_names[i], na=False, case=False)]
-    #     df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].str.contains(uni_names[i], na=False, case=False)]
-    #     # concat it to the df_program_stats
-    #     df_uni_stats = pd.concat([df_uni_stats, df_uni])
+    for i in range(len(uni_names)):
+        # append this to a df df[df['School'].str.contains(uni_names[i], na=False, case=False)]
+        df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].str.contains(uni_names[i], na=False, case=False)]
+        # concat it to the df_program_stats
+        df_uni_stats = pd.concat([df_uni_stats, df_uni])
         
-    # for i in range(len(program_names)):
-    #     df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program_names[i], na=False, case=False)]
-    #     df_program_stats = pd.concat([df_program_stats, df_program])
+    for i in range(len(program_names)):
+        df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program_names[i], na=False, case=False)]
+        df_program_stats = pd.concat([df_program_stats, df_program])
 
     return df_type_of_applicant_stats, uni_names, program_names
 
