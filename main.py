@@ -119,7 +119,7 @@ df = getDataFrame()
 uni_names = st.sidebar.text_input("University Names(separate by commas no spaces)", "")
 program_names = st.sidebar.text_input("Program Names(separate by commas no spaces)", "")
 # create dropdown two options 105 and 101
-type_of_admission = st.sidebar.selectbox("Type of applicant", ["101", "105", "All"])
+type_of_admission = st.sidebar.selectbox("Type of applicant", ["All", "101", "105"])
 
 
 # if we get input from the two variables
