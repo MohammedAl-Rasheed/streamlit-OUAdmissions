@@ -63,6 +63,11 @@ def getDataFrame():
                         '90 grade 12 Q1 90 grade 11': '90',
                         '92 grade 12 midterms 96 grade 11': '94',
                         '94 4 g12 91 with 2 g11 prereqs': '91',
+                        '92 (As of time accepted)': '92',
+                        '95 (including 1 prerequisite)': '95',
+                        '4A*s (equivalent to 95-100)': '97.5',
+                        '4 A* (A-levels)': '97.5',
+                        '94.6 based off 3 courses supposed to be 97 cause physics is gonna get pushed out 96.3 including gr11': '96.3',
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
