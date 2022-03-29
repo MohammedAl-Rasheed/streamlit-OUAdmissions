@@ -61,7 +61,6 @@ def getDataFrame():
                         'idk like around 90': '90',
                         '90 grade 12 Q1 90 grade 11': '90',
                         '92 grade 12 midterms 96 grade 11': '94',
-                        
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
@@ -114,8 +113,8 @@ def getDF(uni_names = [],program_names = []):
 st.title("Ontario Universities Admissions - Data Analysis")
 df = getDataFrame()
 # create 2 boxes where user can input multiple inputs
-uni_names = st.sidebar.text_input("University Names", "")
-program_names = st.sidebar.text_input("Program Names", "")
+uni_names = st.sidebar.text_input("University Names(separate by commas no spaces)", "")
+program_names = st.sidebar.text_input("Program Names(separate by commas no spaces)", "")
 
 # if we get input from the two variables
 if uni_names or program_names:
