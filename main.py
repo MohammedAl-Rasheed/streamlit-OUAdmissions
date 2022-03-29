@@ -103,7 +103,7 @@ def getStats(dfStats, unis, programs):
 
     return AdmissionAverage, AdmissionAverage101, AdmissionAverage105
 
-def getDF(df, uni_names,program_names, type_of_applicant):
+def getDF(df, uni_names, program_names, type_of_applicant):
     df_uni_stats = pd.DataFrame()
     df_program_stats = pd.DataFrame()
     df_type_of_applicant_stats = pd.DataFrame()
@@ -113,17 +113,17 @@ def getDF(df, uni_names,program_names, type_of_applicant):
 
         df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df_type])
 
-    for i in range(len(uni_names)):
-        # append this to a df df[df['School'].str.contains(uni_names[i], na=False, case=False)]
-        df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].str.contains(uni_names[i], na=False, case=False)]
-        # concat it to the df_program_stats
-        df_uni_stats = pd.concat([df_uni_stats, df_uni])
+    # for i in range(len(uni_names)):
+    #     # append this to a df df[df['School'].str.contains(uni_names[i], na=False, case=False)]
+    #     df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].str.contains(uni_names[i], na=False, case=False)]
+    #     # concat it to the df_program_stats
+    #     df_uni_stats = pd.concat([df_uni_stats, df_uni])
         
-    for i in range(len(program_names)):
-        df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program_names[i], na=False, case=False)]
-        df_program_stats = pd.concat([df_program_stats, df_program])
+    # for i in range(len(program_names)):
+    #     df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program_names[i], na=False, case=False)]
+    #     df_program_stats = pd.concat([df_program_stats, df_program])
 
-    return df_program_stats, uni_names, program_names
+    return df_type_of_applicant_stats, uni_names, program_names
 
 
 st.title("Ontario Universities Admissions - Data Analysis")
