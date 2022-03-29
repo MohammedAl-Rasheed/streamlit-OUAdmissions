@@ -68,6 +68,11 @@ def getDataFrame():
                         '4A*s (equivalent to 95-100)': '97.5',
                         '4 A* (A-levels)': '97.5',
                         '94.6 based off 3 courses supposed to be 97 cause physics is gonna get pushed out 96.3 including gr11': '96.3',
+                        '99.75 (Gr12 only) --> 99 (including gr11 english but my english teacher never gave out 96)': '99',
+                        'Top 6: 95 on the dot': '95',
+                        "mid 90's": '95',
+                        "mid 90": '95',
+                        "low/mid 90s": '95',
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
@@ -101,15 +106,19 @@ def getStats(dfStats, unis, programs):
 def getDF(df, uni_names,program_names, type_of_applicant):
     df_uni_stats = pd.DataFrame()
     df_program_stats = pd.DataFrame()
+    df_type_of_applicant_stats = pd.DataFrame()
+
+    if type_of_applicant != 'All':
+        df_type = df[df['Type of Applicant'].str.contains(type_of_applicant, na=False, case=False)].reset_index(drop=True)
+
+        df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df_type])
+
     for i in range(len(uni_names)):
         # append this to a df df[df['School'].str.contains(uni_names[i], na=False, case=False)]
-        df_uni = df[df['School'].str.contains(uni_names[i], na=False, case=False)]
+        df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].str.contains(uni_names[i], na=False, case=False)]
         # concat it to the df_program_stats
         df_uni_stats = pd.concat([df_uni_stats, df_uni])
-    if len(program_names) == 0:
-        return df_program_stats, uni_names, program_names
-    if len(uni_names) == 0:
-        df_uni_stats = df
+        
     for i in range(len(program_names)):
         df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program_names[i], na=False, case=False)]
         df_program_stats = pd.concat([df_program_stats, df_program])
