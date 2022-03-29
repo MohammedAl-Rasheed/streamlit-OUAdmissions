@@ -123,14 +123,17 @@ def getDF(df, uni_names, program_names, type_of_applicant):
         df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df])
 
     if len(uni_names) != 0:
-        df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].isin(uni_names)]
-        df_uni_stats = pd.concat([df_uni_stats, df_uni]).reset_index(drop=True)
+        for uni in uni_names:
+            df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].str.contains(uni, na=False, case=False)].reset_index(drop=True)
+            df_uni_stats = pd.concat([df_uni_stats, df_uni])
     else:
-        df_uni_stats = pd.concat([df_uni_stats, df_type_of_applicant_stats]).reset_index(drop=True)
+        df_uni_stats = pd.concat([df_uni_stats, df_type_of_applicant_stats])
+
     
     if len(program_names) != 0:
-        df_program = df_uni_stats[df_uni_stats['Program'].isin(program_names)].reset_index(drop=True)
-        df_program_stats = pd.concat([df_program_stats, df_program])
+        for program in program_names:
+            df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program, na=False, case=False)].reset_index(drop=True)
+            df_program_stats = pd.concat([df_program_stats, df_program])
     else:
         df_program_stats = pd.concat([df_program_stats, df_uni_stats])
         
