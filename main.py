@@ -132,7 +132,7 @@ def getDF(df, uni_names, program_names, type_of_applicant):
     
     if len(program_names) != 0:
         for program in program_names:
-            df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program, na=False, case=False)].reset_index(drop=True)
+            df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program, case=False)].reset_index(drop=True)
             df_program_stats = pd.concat([df_program_stats, df_program])
     else:
         df_program_stats = pd.concat([df_program_stats, df_uni_stats])
