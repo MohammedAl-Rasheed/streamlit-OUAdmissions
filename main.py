@@ -94,21 +94,19 @@ def getStats(dfStats, unis, programs):
     return AdmissionAverage, AdmissionAverage101, AdmissionAverage105
 
 def getDF(df, uni_names,program_names, type_of_applicant):
-    # if type_of_admission is not empty
-    # if type_of_applicant != 'All' or type_of_applicant != '':
-    #     newDF = df[df['Type (101/105)'].str.contains(type_of_admission)].reset_index(drop=True)
-
-    # if uni_names is not empty
-    if uni_names != []:
+    newDF = pd.DataFrame()
+    if len(uni_names) != 0:
         for uni in uni_names:
-           newDF = pd.concat([newDF, df[df['School'].str.contains(uni)]]).reset_index(drop=True)
-
-    # if program_names is not empty
-    if program_names != []:
+            newUnis =  df[df['School'].str.contains(uni, na=False, case=False)]
+            newDF = pd.concat([newDF, newUnis], axis=0).reset_index(drop=True)
+    if len(program_names) != 0:
         for program in program_names:
-            newDF = pd.concat([newDF, df[df['Program'].str.contains(program)]]).reset_index(drop=True)
+            newPrograms =  df[df['Program'].str.contains(program, na=False, case=False)]
+            newDF = pd.concat([newDF, newPrograms], axis=0).reset_index(drop=True)
+    if type_of_applicant != 'All':
+        newType = newDF[newDF['Type (101/105)'].str.contains(type_of_applicant)].reset_index(drop=True)
 
-
+        newDF = pd.concat([newDF, newType], axis=0).reset_index(drop=True)
 
     return newDF, uni_names, program_names, type_of_applicant
 
