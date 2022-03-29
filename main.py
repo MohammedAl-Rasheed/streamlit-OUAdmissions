@@ -34,7 +34,7 @@ def getDataFrame():
     # Delete rows where average  NaN
     df = df.dropna(how = 'any', subset=['Average'])
     # if Type (101/105) column is empty, fill it with '101'
-    df['Type (101/105)'] = df['Type (101/105)'].fillna('101')
+    
 
     blacklisted_avgs = {'99.75 (gr.12 data, adv func, bio, chem)': '99.75',
                         'Top6 98, 5 in AP CS and 7 in both IB Math and Physics': '98',
@@ -123,17 +123,14 @@ def getDF(df, uni_names, program_names, type_of_applicant):
         df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df])
 
     if len(uni_names) != 0:
-        for uni in uni_names:
-            df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].str.contains(uni, na=False, case=False)].reset_index(drop=True)
-            df_uni_stats = pd.concat([df_uni_stats, df_uni])
+        df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].isin(uni_names)]
+        df_uni_stats = pd.concat([df_uni_stats, df_uni]).reset_index(drop=True)
     else:
-        df_uni_stats = pd.concat([df_uni_stats, df_type_of_applicant_stats])
-
+        df_uni_stats = pd.concat([df_uni_stats, df_type_of_applicant_stats]).reset_index(drop=True)
     
     if len(program_names) != 0:
-        for program in program_names:
-            df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program, case=False)].reset_index(drop=True)
-            df_program_stats = pd.concat([df_program_stats, df_program])
+        df_program = df_uni_stats[df_uni_stats['Program'].isin(program_names)].reset_index(drop=True)
+        df_program_stats = pd.concat([df_program_stats, df_program])
     else:
         df_program_stats = pd.concat([df_program_stats, df_uni_stats])
         
