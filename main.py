@@ -61,6 +61,7 @@ def getDataFrame():
                         'idk like around 90': '90',
                         '90 grade 12 Q1 90 grade 11': '90',
                         '92 grade 12 midterms 96 grade 11': '94',
+                        '94 4 g12 91 with 2 g11 prereqs': '91',
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
