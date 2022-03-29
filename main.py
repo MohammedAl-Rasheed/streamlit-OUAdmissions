@@ -109,7 +109,7 @@ def getDF(df, uni_names, program_names, type_of_applicant):
     df_type_of_applicant_stats = pd.DataFrame()
 
     if type_of_applicant != 'All':
-        df_type = df[df['Type of Applicant'].str.contains(type_of_applicant, na=False, case=False)].reset_index(drop=True)
+        df_type = df[df['Type (101/105)'].str.contains(type_of_applicant, na=False, case=False)].reset_index(drop=True)
 
         df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df_type])
 
