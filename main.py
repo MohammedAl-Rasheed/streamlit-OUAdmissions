@@ -58,6 +58,10 @@ def getDataFrame():
                         '98? 2 IB courses both predicted a 7 and a 5 in AP CS A': '98',
                         '95 (2 g12 final 2 g12 midterm 1 g11 final 1 g11 midterm)': '95',
                         '95 (grade 11 marks) ' : '95',
+                        'idk like around 90': '90',
+                        '90 grade 12 Q1 90 grade 11': '90',
+                        '92 grade 12 midterms 96 grade 11': '94',
+                        
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
