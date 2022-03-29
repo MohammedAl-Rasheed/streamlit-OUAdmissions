@@ -33,6 +33,8 @@ def getDataFrame():
     df['Average'] = df['Average'].str.replace('+', '')
     # Delete rows where average  NaN
     df = df.dropna(how = 'any', subset=['Average'])
+    # if Type (101/105) column is empty, fill it with '101'
+    df['Type (101/105)'] = df['Type (101/105)'].fillna('101')
 
     blacklisted_avgs = {'99.75 (gr.12 data, adv func, bio, chem)': '99.75',
                         'Top6 98, 5 in AP CS and 7 in both IB Math and Physics': '98',
