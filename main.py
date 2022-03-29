@@ -100,12 +100,14 @@ def getDF(df, uni_names,program_names, type_of_applicant):
 
     # if uni_names is not empty
     if uni_names != []:
-        newDF =  pd.concat([newDF, df[df['University'].isin(uni_names)]]).reset_index(drop=True)
+        for uni in uni_names:
+           newDF = pd.concat([newDF, df[df['School'].str.contains(uni)]]).reset_index(drop=True)
 
     # if program_names is not empty
     if program_names != []:
-        newDF = pd.concat([newDF, df[df['Program'].isin(program_names)]]).reset_index(drop=True)
-    
+        for program in program_names:
+            newDF = pd.concat([newDF, df[df['Program'].str.contains(program)]]).reset_index(drop=True)
+
 
 
     return newDF, uni_names, program_names, type_of_applicant
