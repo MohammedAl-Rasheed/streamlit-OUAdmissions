@@ -12,6 +12,7 @@ hide_streamlit_style = """
             .viewerBadge_link__1S137 {visibility: hidden;}
             </style>
             """
+
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 @st.cache
@@ -92,23 +93,22 @@ def getStats(dfStats, unis, programs):
 
     return AdmissionAverage, AdmissionAverage101, AdmissionAverage105
 
-def getDF(uni_names = [],program_names = []):
-    df_uni_stats = pd.DataFrame()
-    df_program_stats = pd.DataFrame()
-    for i in range(len(uni_names)):
-        # append this to a df df[df['School'].str.contains(uni_names[i], na=False, case=False)]
-        df_uni = df[df['School'].str.contains(uni_names[i], na=False, case=False)]
-        # concat it to the df_program_stats
-        df_uni_stats = pd.concat([df_uni_stats, df_uni])
-    if len(program_names) == 0:
-        return df_program_stats, uni_names, program_names
-    if len(uni_names) == 0:
-        df_uni_stats = df
-    for i in range(len(program_names)):
-        df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program_names[i], na=False, case=False)]
-        df_program_stats = pd.concat([df_program_stats, df_program])
+def getDF(df, uni_names,program_names, type_of_applicant):
+    # if type_of_admission is not empty
+    if type_of_applicant != 'All' or type_of_applicant != '':
+        newDF = df[df['Type (101/105)'].str.contains(type_of_admission)].reset_index(drop=True)
 
-    return df_program_stats, uni_names, program_names
+    # if uni_names is not empty
+    if uni_names != []:
+        newDF =  pd.concat([newDF, df[df['University'].isin(uni_names)]]).reset_index(drop=True)
+
+    # if program_names is not empty
+    if program_names != []:
+        newDF = pd.concat([newDF, df[df['Program'].isin(program_names)]]).reset_index(drop=True)
+    
+
+
+    return newDF, uni_names, program_names, type_of_applicant
 
 
 st.title("Ontario Universities Admissions - Data Analysis")
@@ -116,14 +116,17 @@ df = getDataFrame()
 # create 2 boxes where user can input multiple inputs
 uni_names = st.sidebar.text_input("University Names(separate by commas no spaces)", "")
 program_names = st.sidebar.text_input("Program Names(separate by commas no spaces)", "")
+# create dropdown two options 105 and 101
+type_of_admission = st.sidebar.selectbox("Type of applicant", ["101", "105", "All"])
+
 
 # if we get input from the two variables
-if uni_names or program_names:
+if uni_names or program_names or type_of_admission:
     # split the input into a list
     uni_names = uni_names.split(",")
     program_names = program_names.split(",")
     # get the df
-    df_program_stats, uni_names, program_names = getDF(uni_names, program_names)
+    df_program_stats, uni_names, program_names, type_of_admission = getDF(uni_names, program_names, type_of_admission)
     st.write(df_program_stats)
 
     # make a header stats
@@ -144,5 +147,6 @@ if uni_names or program_names:
 
 
 else:
+    # write dataframe that has sorting and filtering featuures
     st.write(df)
 
