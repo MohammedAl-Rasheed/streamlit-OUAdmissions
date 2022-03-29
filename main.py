@@ -77,6 +77,7 @@ def getDataFrame():
                         "96-97???": '96.5',
                         "95-96?": '95.5',
                         "945": '94.5',
+                        "89 (final grade 12 marks)": '89',
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
