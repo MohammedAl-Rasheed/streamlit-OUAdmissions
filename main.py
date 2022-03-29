@@ -95,8 +95,8 @@ def getStats(dfStats, unis, programs):
 
 def getDF(df, uni_names,program_names, type_of_applicant):
     # if type_of_admission is not empty
-    if type_of_applicant != 'All' or type_of_applicant != '':
-        newDF = df[df['Type (101/105)'].str.contains(type_of_admission)].reset_index(drop=True)
+    # if type_of_applicant != 'All' or type_of_applicant != '':
+    #     newDF = df[df['Type (101/105)'].str.contains(type_of_admission)].reset_index(drop=True)
 
     # if uni_names is not empty
     if uni_names != []:
