@@ -257,7 +257,7 @@ st.markdown("""
     - Filter by Program(Just enter the name of the program in the search bar on the left hand side make sure you have no spaces, and consider acrynoms people might use like CS for Computer Science).
     - Sort by any of the columns by clicking on the column name.
     - Histogram showing frequency of each average.
-    - Admissionss average for each specificed program.
+    - Admission averages for each specificed program.
     """)
 df = getDataFrame()
 # create 2 boxes where user can input multiple inputs
