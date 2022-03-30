@@ -24,8 +24,8 @@ def getDataFrame():
     df2 = pd.read_csv('https://docs.google.com/spreadsheets/d/1ZafspjnRJuDjLRKotQ8awLTGcf3RLxrBEh2JtqRGh0Y/export?format=csv')
     # combine df1 and df2
     df = pd.concat([df1, df2], axis=0)
-    # delete all duplicate rows check all columns
-    df = df.drop_duplicates(subset=None, keep='first', inplace=False)
+    # delete all duplicate rows subset Discord and Program and School
+    df = df.drop_duplicates(subset=['Discord', 'Program', 'School'])
     # Remove all the '%" in the average column
     df['Average'] = df['Average'].str.replace('%', '')
     df['Average'] = df['Average'].str.replace('~', '')
