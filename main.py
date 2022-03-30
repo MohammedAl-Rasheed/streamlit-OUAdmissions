@@ -280,7 +280,7 @@ AdmissionAverage, AdmissionAverage101 = getStats(df_program_stats, uni_names, pr
 # print the stats
 st.write("Admission Average: ", AdmissionAverage)
 # visualize histogram
-st.subheader("Histogram of Admission Rates")
+st.subheader("Histogram of Admission Averages:")
 
 # graph the data sort the x-axis using px.histogram
 df_program_stats = df_program_stats.sort_values(by=['Average'], ascending=False)
