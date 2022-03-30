@@ -1,0 +1,30 @@
+What is this person's average: 
+could not convert string to float: '89 (final grade 12 marks) '
+
+
+This person's average is 89.
+                           89.
+What is this person's average: 
+could not convert string to float: 'Gr.11 94 first sem gr12 92'
+
+
+This person's average is 92.
+                           92.
+What is this person's average: 
+could not convert string to float: 'Gr.11 94 first sem gr12 92'
+
+
+This person's average is 92.
+                           92.
+What is this person's average: 
+could not convert string to float: 'Gr.11 94 first sem gr12 92'
+
+
+This person's average is 92.
+                           92.
+What is this person's average: 
+could not convert string to float: "mid 90's"
+
+
+This person's average is mid 90's.
+                               90  .
