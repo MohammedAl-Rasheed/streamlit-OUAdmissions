@@ -1,4 +1,3 @@
-import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,6 +11,7 @@ hide_streamlit_style = """
             .viewerBadge_link__1S137 {visibility: hidden;}
             </style>
             """
+
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 @st.cache
@@ -32,6 +32,8 @@ def getDataFrame():
     df['Average'] = df['Average'].str.replace('+', '')
     # Delete rows where average  NaN
     df = df.dropna(how = 'any', subset=['Average'])
+    # if Type (101/105) column is empty, fill it with '101'
+    
 
     blacklisted_avgs = {'99.75 (gr.12 data, adv func, bio, chem)': '99.75',
                         'Top6 98, 5 in AP CS and 7 in both IB Math and Physics': '98',
@@ -62,6 +64,22 @@ def getDataFrame():
                         '90 grade 12 Q1 90 grade 11': '90',
                         '92 grade 12 midterms 96 grade 11': '94',
                         '94 4 g12 91 with 2 g11 prereqs': '91',
+                        '92 (As of time accepted)': '92',
+                        '95 (including 1 prerequisite)': '95',
+                        '4A*s (equivalent to 95-100)': '97.5',
+                        '4 A* (A-levels)': '97.5',
+                        '94.6 based off 3 courses supposed to be 97 cause physics is gonna get pushed out 96.3 including gr11': '96.3',
+                        '99.75 (Gr12 only) --> 99 (including gr11 english but my english teacher never gave out 96)': '99',
+                        'Top 6: 95 on the dot': '95',
+                        "mid 90's": '95',
+                        "mid 90": '95',
+                        "low/mid 90s": '95',
+                        "99.75 (including bio chem data and adv func)": '99.75',
+                        "96-97???": '96.5',
+                        "95-96?": '95.5',
+                        "945": '94.5',
+                        "89 (final grade 12 marks)": '89',
+                        "99.3 with 6 4U finals": '99.3',
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
@@ -92,22 +110,33 @@ def getStats(dfStats, unis, programs):
 
     return AdmissionAverage, AdmissionAverage101, AdmissionAverage105
 
-def getDF(uni_names = [],program_names = []):
+def getDF(df, uni_names, program_names, type_of_applicant):
     df_uni_stats = pd.DataFrame()
     df_program_stats = pd.DataFrame()
-    for i in range(len(uni_names)):
-        # append this to a df df[df['School'].str.contains(uni_names[i], na=False, case=False)]
-        df_uni = df[df['School'].str.contains(uni_names[i], na=False, case=False)]
-        # concat it to the df_program_stats
-        df_uni_stats = pd.concat([df_uni_stats, df_uni])
-    if len(program_names) == 0:
-        return df_program_stats, uni_names, program_names
-    if len(uni_names) == 0:
-        df_uni_stats = df
-    for i in range(len(program_names)):
-        df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program_names[i], na=False, case=False)]
-        df_program_stats = pd.concat([df_program_stats, df_program])
+    df_type_of_applicant_stats = pd.DataFrame()
 
+    if type_of_applicant != 'All':
+        df_type = df[df['Type (101/105)'].str.contains(type_of_applicant, na=False, case=False)].reset_index(drop=True)
+
+        df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df_type])
+    else:
+        df_type_of_applicant_stats = pd.concat([df_type_of_applicant_stats, df])
+
+    if len(uni_names) != 0:
+        for uni in uni_names:
+            df_uni = df_type_of_applicant_stats[df_type_of_applicant_stats['School'].str.contains(uni, na=False, case=False)].reset_index(drop=True)
+            df_uni_stats = pd.concat([df_uni_stats, df_uni])
+    else:
+        df_uni_stats = df_type_of_applicant_stats
+
+    
+    if len(program_names) != 0:
+        for program in program_names:
+            df_program = df_uni_stats[df_uni_stats['Program'].str.contains(program, na=False, case=False)].reset_index(drop=True)
+            df_program_stats = pd.concat([df_program_stats, df_program])
+    else:
+        df_program_stats = pd.concat([df_program_stats, df_uni_stats])
+        
     return df_program_stats, uni_names, program_names
 
 
@@ -116,14 +145,17 @@ df = getDataFrame()
 # create 2 boxes where user can input multiple inputs
 uni_names = st.sidebar.text_input("University Names(separate by commas no spaces)", "")
 program_names = st.sidebar.text_input("Program Names(separate by commas no spaces)", "")
+# create dropdown two options 105 and 101
+type_of_admission = st.sidebar.selectbox("Type of applicant", ["All", "101", "105"])
+
 
 # if we get input from the two variables
-if uni_names or program_names:
+if uni_names or program_names or type_of_admission:
     # split the input into a list
     uni_names = uni_names.split(",")
     program_names = program_names.split(",")
     # get the df
-    df_program_stats, uni_names, program_names = getDF(uni_names, program_names)
+    df_program_stats, uni_names, program_names = getDF(df, uni_names, program_names, type_of_admission)
     st.write(df_program_stats)
 
     # make a header stats
@@ -144,5 +176,5 @@ if uni_names or program_names:
 
 
 else:
+    # write dataframe that has sorting and filtering featuures
     st.write(df)
-
