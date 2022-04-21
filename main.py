@@ -16,9 +16,18 @@ hide_streamlit_style = """
 
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
+def color_df(val):
+    if val == 'Accepted':
+        color = 'green'
+    elif val == 'Rejected':
+        color = 'red'
+    else:
+        color = 'yellow'
+    return f'background-color: {color}'
+
 @st.cache
 def getDataFrame():
-    # get csv from to df https://docs.google.com/spreadsheets/d/1A-6z5Fe30C266rK-6TnQm6CNOGCOnjK6s4hwfRIDMhQ/edit?usp=sharing
+    # get from to df https://docs.google.com/spreadsheets/d/1A-6z5Fe30C266rK-6TnQm6CNOGCOnjK6s4hwfRIDMhQ/edit?usp=sharing
     df1 = pd.read_csv('https://docs.google.com/spreadsheets/d/1A-6z5Fe30C266rK-6TnQm6CNOGCOnjK6s4hwfRIDMhQ/export?format=csv')
     # get csv from to df https://docs.google.com/spreadsheets/d/1ZafspjnRJuDjLRKotQ8awLTGcf3RLxrBEh2JtqRGh0Y/edit?usp=sharing
     df2 = pd.read_csv('https://docs.google.com/spreadsheets/d/1ZafspjnRJuDjLRKotQ8awLTGcf3RLxrBEh2JtqRGh0Y/export?format=csv')
@@ -38,7 +47,7 @@ def getDataFrame():
     df = df.dropna(how = 'any', subset=['Average'])
     # if Type (101/105) column is empty, fill it with '101'
     df['Type (101/105)'] = df['Type (101/105)'].fillna('101')
-    
+
 
     blacklisted_avgs = {'99.75 (gr.12 data, adv func, bio, chem)': '99.75',
                         'Top6 98, 5 in AP CS and 7 in both IB Math and Physics': '98',
@@ -164,6 +173,20 @@ def getDataFrame():
                         "99 20 adjustment factor": '99',
                         "94 ish I think": '94',
                         "97.6 - 98.1": '97.9',
+                        "98.55 top 6 U/M  predicted 45/45 IB score - both subject to change after IB exams": '98.55',
+                        "98.83 top 6  predicted 45/45 IB score subject to change after IB exams": '98.83',
+                        "mid 80s": '85',
+                        "90's": '94',
+                        "99 at time of offer": '99',  
+                        "High 80s": '89',  
+                        "94 using grade 11 marks as substitutions for missing marks": '94',
+                        "99.75 (bio chem adv functions data)": '99.75',
+                        "90 (might be a bit lower since they used some gr11 marks)" : '88',
+                        "92-ish": '92',
+                        "89.75-90": '89.75',
+        
+
+
                         }
 
     # make sure that if the data frame has value that is a key of the dictionary, it will be replaced with the value
@@ -174,11 +197,14 @@ def getDataFrame():
     for index, row in df.iterrows():
         # if the average column is less then 80
         try:
-            if float(row['Average']) < 80.0:
+            if float(row['Average']) < 80.0 or row['Average'] == '':
                 # drpo it
                 df = df.drop(index)
         except:
             continue
+
+    # color the dataframe based off the status column
+    df.style.apply(color_df, axis=0, subset=['Status'])
 
 
 
@@ -284,7 +310,12 @@ st.subheader("Histogram of Admission Averages:")
 
 # graph the data sort the x-axis using px.histogram
 df_program_stats = df_program_stats.sort_values(by=['Average'], ascending=False)
-fig = px.histogram(df_program_stats, x="Average", title="Histogram of Admission Rates")
+
+# make every value in the average colum a float
+df_program_stats['Average'] = df_program_stats['Average'].astype(float)
+# round every value in the average column to int
+df_program_stats['Average'] = df_program_stats['Average'].astype(int)
+
+
+fig = px.histogram(df_program_stats, x="Average")
 st.plotly_chart(fig)
-
-
